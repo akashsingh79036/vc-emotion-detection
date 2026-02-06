@@ -1,7 +1,7 @@
 import numpy as np
 import pandas as pd
 import os 
-from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.feature_extraction.text import CountVectorizer
 import yaml
 import logging
 
@@ -40,10 +40,10 @@ def load_params(params_path: str) -> dict:
         raise
 
 
-def apply_tfidf(train_data:pd.DataFrame,test_data:  pd.DataFrame,max_features:int) -> tuple:
+def apply_bow(train_data:pd.DataFrame,test_data:  pd.DataFrame,max_features:int) -> tuple:
     try:
         #Apply Bag of words(countvectorizer)
-        vectorizer=TfidfVectorizer(max_features=max_features)
+        vectorizer=CountVectorizer(max_features=max_features)
 
         #Apply Bow
         X_train=train_data['content'].values
@@ -92,7 +92,7 @@ def main():
         #fetch the data from data/interim
         train_data=load_data('./data/interim/train_processed.csv')
         test_data=load_data('./data/interim/test_processed.csv')
-        train_df,test_df=apply_tfidf(train_data,test_data,max_features=max_features)
+        train_df,test_df=apply_bow(train_data,test_data,max_features=max_features)
         save_data(train_df,os.path.join("data","features","train_bow.csv"))
         save_data(test_df,os.path.join("data","features","test_bow.csv"))
     except Exception as e:
