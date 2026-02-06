@@ -1,0 +1,87 @@
+schema: '2.0'
+stages:
+  data_ingestion:
+    cmd: python src/data/data_ingestion.py
+    deps:
+    - path: src/data/data_ingestion.py
+      hash: md5
+      md5: 54016ae823ef57e3f80a18195a7e072f
+      size: 3332
+    params:
+      params.yaml:
+        data_ingestion.test_size: 0.2
+    outs:
+    - path: data/raw
+      hash: md5
+      md5: fb326d2eec197669f9638afde28356bf.dir
+      size: 827973
+      nfiles: 2
+  build_features:
+    cmd: python src/features/build_features.py
+    deps:
+    - path: data/interim
+      hash: md5
+      md5: ef37afd17951ea8af23114b28d26f784.dir
+      size: 566210
+      nfiles: 2
+    - path: src/features/build_features.py
+      hash: md5
+      md5: 10a378e98e897e89311a49f33330a322
+      size: 3966
+    outs:
+    - path: data/features
+      hash: md5
+      md5: 7d79bfa311e89c863e5ca1287d142e2e.dir
+      size: 4534613
+      nfiles: 2
+  data_preprocessing:
+    cmd: python src/data/data_preprocessing.py
+    deps:
+    - path: data/raw
+      hash: md5
+      md5: fb326d2eec197669f9638afde28356bf.dir
+      size: 827973
+      nfiles: 2
+    - path: src/data/data_preprocessing.py
+      hash: md5
+      md5: 9af1d017f0a02f040d9fd1218ee2fe99
+      size: 4526
+    outs:
+    - path: data/interim
+      hash: md5
+      md5: ef37afd17951ea8af23114b28d26f784.dir
+      size: 566210
+      nfiles: 2
+  train_model:
+    cmd: python src/models/train_model.py
+    deps:
+    - path: data/features
+      hash: md5
+      md5: 7d79bfa311e89c863e5ca1287d142e2e.dir
+      size: 4534613
+      nfiles: 2
+    - path: src/models/train_model.py
+      hash: md5
+      md5: bf2f2780589c0e89bda90fa6095a5b21
+      size: 3015
+    outs:
+    - path: models/model.pkl
+      hash: md5
+      md5: 197e36feaea798cee29d5fa01a0ba4ad
+      size: 39345
+  predict_model:
+    cmd: python src/models/predict_model.py
+    deps:
+    - path: models/model.pkl
+      hash: md5
+      md5: 197e36feaea798cee29d5fa01a0ba4ad
+      size: 39345
+    - path: src/models/predict_model.py
+      hash: md5
+      md5: 1255463ba2d815be56bf459bfd3a500f
+      size: 3275
+    outs:
+    - path: reports/metrics.json
+      hash: md5
+      md5: cbc0d54533be465015497a50bcb4360d
+      size: 146
