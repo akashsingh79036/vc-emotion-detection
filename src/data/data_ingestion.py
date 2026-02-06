@@ -52,7 +52,7 @@ def process_data(df: pd.DataFrame) -> pd.DataFrame:
     try:
         df.drop(columns=['tweet_id'], inplace=True)
         final_df = df[df['sentiment'].isin(['happiness', 'sadness'])]
-        final_df['sentiment'].replace({'happiness': 1, 'sadness': 0}, inplace=True)
+        final_df['sentiment'].replace({'happiness': 1, 'sadness': 0})
         logger.debug('data loaded succesfully %s',final_df)
         return final_df
     except KeyError as e:

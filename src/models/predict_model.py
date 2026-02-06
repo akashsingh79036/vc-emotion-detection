@@ -52,8 +52,8 @@ def evaluate_model(clf,X_test:np.ndarray,y_test:np.ndarray) -> dict:
         y_pred_proba=clf.predict_proba(X_test)[:,1]
         
         #calculate evaluation metrics
-        precision=precision_score(y_test,y_pred)
-        recall=recall_score(y_test,y_pred)  
+        precision=precision_score(y_test,y_pred,pos_label='happiness')
+        recall=recall_score(y_test,y_pred,pos_label='happiness')  
         auc=roc_auc_score(y_test,y_pred_proba)
         accuracy=accuracy_score(y_test,y_pred)
         
